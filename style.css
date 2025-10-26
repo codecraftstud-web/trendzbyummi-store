@@ -535,7 +535,7 @@ body {
     gap: 0.5rem;
 }
 
-/* Admin Panel */
+/* Simple Admin Panel */
 .admin-panel {
     position: fixed;
     bottom: 2rem;
@@ -584,9 +584,36 @@ body {
     border-radius: 5px;
 }
 
-.admin-content small {
+/* Simple Image Upload */
+.image-upload {
+    margin: 1rem 0;
+}
+
+.upload-area {
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fafafa;
+}
+
+.upload-area:hover {
+    border-color: var(--accent);
+    background: #f8f9fa;
+}
+
+.upload-area i {
+    font-size: 2rem;
     color: #666;
-    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.upload-area p {
+    color: #666;
+    margin: 0;
 }
 
 /* Floating WhatsApp */
@@ -643,5 +670,10 @@ body {
         width: 50px;
         height: 50px;
         font-size: 1.5rem;
+    }
+    
+    .admin-content {
+        width: 280px;
+        right: -20px;
     }
 }
