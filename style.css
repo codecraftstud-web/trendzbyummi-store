@@ -792,4 +792,118 @@ body {
 
 .success-animation {
     animation: success 0.5s ease-in-out;
+}/* Social Media Section */
+.social-media {
+    padding: 80px 0;
+    background: var(--gray);
+    text-align: center;
+}
+
+.social-media h2 {
+    margin-bottom: 1rem;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.social-media p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 3rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: var(--light);
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    min-width: 250px;
+}
+
+.social-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.social-link i {
+    font-size: 1.8rem;
+    width: 30px;
+}
+
+.social-link:nth-child(1) i { color: #000000; } /* TikTok */
+.social-link:nth-child(2) i { color: #E4405F; } /* Instagram */
+.social-link:nth-child(3) i { color: #1877F2; } /* Facebook */
+
+/* Image Upload Styles */
+.image-upload-container {
+    margin-bottom: 1rem;
+}
+
+.upload-area {
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fafafa;
+}
+
+.upload-area:hover {
+    border-color: var(--accent);
+    background: #f8f9fa;
+}
+
+.upload-area i {
+    font-size: 2rem;
+    color: #666;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.upload-text {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+#imagePreview {
+    max-width: 100%;
+    max-height: 200px;
+    margin-top: 1rem;
+    border-radius: 10px;
+    display: none;
+}
+
+.upload-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.upload-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
