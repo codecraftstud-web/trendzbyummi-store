@@ -51,7 +51,7 @@
         <div class="container">
             <h2>Our Collection</h2>
             <div class="product-grid" id="productGrid">
-                <!-- Products loaded dynamically -->
+                <!-- Products will load here -->
             </div>
         </div>
     </section>
@@ -177,43 +177,21 @@
         </div>
     </div>
 
-    <!-- Secure Admin Panel -->
+    <!-- Admin Panel -->
     <div class="admin-panel">
         <button class="admin-toggle" id="adminToggle">
-            <i class="fas fa-lock"></i>
+            <i class="fas fa-cog"></i>
         </button>
         <div class="admin-content" id="adminContent">
-            <div class="admin-header">
-                <h3>Admin Panel</h3>
-                <button class="logout-btn" onclick="logoutAdmin()">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
+            <h3>Admin Panel</h3>
             <form id="addProductForm">
                 <input type="text" id="productName" placeholder="Product Name" required>
                 <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
                 <textarea id="productDesc" placeholder="Product Description" required></textarea>
-                
-                <div class="image-upload-container">
-                    <div class="upload-area" id="uploadArea">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <div class="upload-text">Tap to select product image<br><small>or drag & drop</small></div>
-                    </div>
-                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
-                    <img id="imagePreview" alt="Image Preview">
-                    <button type="button" class="upload-btn" id="uploadButton" disabled>
-                        <i class="fas fa-upload"></i> Upload Image
-                    </button>
-                </div>
-                
-                <input type="text" id="productImage" placeholder="Image URL will appear here" readonly>
-                <small>Image will be uploaded automatically</small>
+                <input type="text" id="productImage" placeholder="Image URL" required>
+                <small>Paste image URL from any source</small>
                 <button type="submit">Add Product</button>
             </form>
-            <div class="admin-stats">
-                <p>Products: <span id="productCount">0</span></p>
-                <p>Orders: <span id="orderCount">0</span></p>
-            </div>
         </div>
     </div>
 
