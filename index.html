@@ -177,19 +177,25 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- Simple Admin Panel -->
     <div class="admin-panel">
         <button class="admin-toggle" id="adminToggle">
-            <i class="fas fa-cog"></i>
+            <i class="fas fa-plus"></i>
         </button>
         <div class="admin-content" id="adminContent">
-            <h3>Admin Panel</h3>
+            <h3>Add New Product</h3>
             <form id="addProductForm">
                 <input type="text" id="productName" placeholder="Product Name" required>
                 <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
                 <textarea id="productDesc" placeholder="Product Description" required></textarea>
-                <input type="text" id="productImage" placeholder="Image URL" required>
-                <small>Paste image URL from any source</small>
+                <div class="image-upload">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-camera"></i>
+                        <p>Tap to add product photo</p>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <img id="imagePreview" style="display: none; max-width: 100%; margin-top: 10px; border-radius: 10px;">
+                </div>
                 <button type="submit">Add Product</button>
             </form>
         </div>
