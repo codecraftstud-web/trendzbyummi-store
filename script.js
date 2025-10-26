@@ -1,3 +1,7 @@
+// Admin security
+let isAdminLoggedIn = false;
+const ADMIN_PASSWORD = "trendz2024"; // Change this to your preferred password
+
 // Product data
 let products = JSON.parse(localStorage.getItem('trendzbyummi_products')) || [
     {
@@ -46,7 +50,43 @@ function initStore() {
         if (e.target === document.getElementById('checkoutModal')) {
             closeCheckoutModal();
         }
+        if (!document.getElementById('adminContent').contains(e.target) && e.target !== document.getElementById('adminToggle')) {
+            document.getElementById('adminContent').classList.remove('active');
+        }
     });
+}
+
+// Admin security functions
+function toggleAdminPanel() {
+    if (!isAdminLoggedIn) {
+        document.getElementById('adminContent').classList.add('active');
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('adminSection').style.display = 'none';
+    } else {
+        document.getElementById('adminContent').classList.toggle('active');
+    }
+}
+
+function loginAdmin() {
+    const password = document.getElementById('adminPassword').value;
+    if (password === ADMIN_PASSWORD) {
+        isAdminLoggedIn = true;
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('adminSection').style.display = 'block';
+        showNotification('✅ Admin access granted');
+    } else {
+        showNotification('❌ Incorrect password');
+        document.getElementById('adminPassword').value = '';
+    }
+}
+
+function logoutAdmin() {
+    isAdminLoggedIn = false;
+    document.getElementById('adminContent').classList.remove('active');
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('adminSection').style.display = 'none';
+    document.getElementById('adminPassword').value = '';
+    showNotification('🔒 Admin logged out');
 }
 
 // Setup image upload
@@ -55,27 +95,31 @@ function setupImageUpload() {
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
     
-    uploadArea.addEventListener('click', function() {
-        imageInput.click();
-    });
-    
-    imageInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-                currentImage = e.target.result;
-                uploadArea.innerHTML = '<i class="fas fa-check" style="color: #4CAF50;"></i><p>Photo added! Tap to change</p>';
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        }
-    });
+    if (uploadArea && imageInput) {
+        uploadArea.addEventListener('click', function() {
+            imageInput.click();
+        });
+        
+        imageInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    currentImage = e.target.result;
+                    uploadArea.innerHTML = '<i class="fas fa-check" style="color: #4CAF50;"></i><p>Photo added! Tap to change</p>';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    }
 }
 
 // Display products
 function displayProducts() {
     const productGrid = document.getElementById('productGrid');
+    if (!productGrid) return;
+    
     productGrid.innerHTML = '';
     
     products.forEach(product => {
@@ -236,12 +280,13 @@ function sendWhatsAppOrder(orderDetails) {
 }
 
 // Admin functions
-function toggleAdminPanel() {
-    document.getElementById('adminContent').classList.toggle('active');
-}
-
 function addNewProduct(e) {
     e.preventDefault();
+    
+    if (!isAdminLoggedIn) {
+        showNotification('❌ Please log in as admin first');
+        return;
+    }
     
     const newProduct = {
         id: Date.now(),
