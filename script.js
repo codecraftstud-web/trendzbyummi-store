@@ -1,6 +1,6 @@
-// Secure Admin Authentication
+l// Secure Admin Authentication
 const adminConfig = {
-    password: "trendz2024", // Change this to your preferred password
+    password: "trendz2024",
     isAuthenticated: false
 };
 
@@ -30,6 +30,7 @@ let products = JSON.parse(localStorage.getItem('trendzbyummi_products')) || [
 ];
 
 let cart = JSON.parse(localStorage.getItem('trendzbyummi_cart')) || [];
+let currentImageFile = null;
 
 // DOM Elements
 const productGrid = document.getElementById('productGrid');
@@ -48,12 +49,17 @@ const adminContent = document.getElementById('adminContent');
 const addProductForm = document.getElementById('addProductForm');
 const productCount = document.getElementById('productCount');
 const orderCount = document.getElementById('orderCount');
+const uploadArea = document.getElementById('uploadArea');
+const imagePreview = document.getElementById('imagePreview');
+const imageUrlInput = document.getElementById('productImage');
+const uploadButton = document.getElementById('uploadButton');
 
 // Initialize the store
 function initStore() {
     displayProducts();
     updateCart();
     updateAdminStats();
+    setupImageUpload();
     
     // Event Listeners
     cartIcon.addEventListener('click', toggleCart);
@@ -75,6 +81,122 @@ function initStore() {
         if (!adminContent.contains(e.target) && e.target !== adminToggle) {
             adminContent.classList.remove('active');
         }
+    });
+}
+
+// Image Upload Functionality
+function setupImageUpload() {
+    uploadArea.addEventListener('click', () => {
+        document.getElementById('fileInput').click();
+    });
+    
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--accent)';
+        uploadArea.style.background = '#f0f0f0';
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#ddd';
+        uploadArea.style.background = '#fafafa';
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#ddd';
+        uploadArea.style.background = '#fafafa';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleImageFile(files[0]);
+        }
+    });
+    
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleImageFile(e.target.files[0]);
+        }
+    });
+    
+    uploadButton.addEventListener('click', uploadToImgur);
+}
+
+function handleImageFile(file) {
+    if (!file.type.startsWith('image/')) {
+        showNotification('❌ Please select an image file');
+        return;
+    }
+    
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        showNotification('❌ Image size should be less than 5MB');
+        return;
+    }
+    
+    currentImageFile = file;
+    
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = 'block';
+        uploadButton.disabled = false;
+        uploadArea.innerHTML = '<i class="fas fa-check-circle" style="color: var(--accent);"></i><div class="upload-text">Image selected! Click upload</div>';
+    };
+    reader.readAsDataURL(file);
+}
+
+function uploadToImgur() {
+    if (!currentImageFile) {
+        showNotification('❌ Please select an image first');
+        return;
+    }
+    
+    uploadButton.disabled = true;
+    uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    
+    const formData = new FormData();
+    formData.append('image', currentImageFile);
+    
+    // Using a free image hosting service (imgbb as example)
+    // Note: For production, use a proper backend or Imgur API with client ID
+    fetch('https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const imageUrl = data.data.url;
+            imageUrlInput.value = imageUrl;
+            showNotification('✅ Image uploaded successfully!');
+            uploadButton.innerHTML = '<i class="fas fa-check"></i> Uploaded';
+            
+            // Reset upload area
+            setTimeout(() => {
+                uploadArea.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <div class="upload-text">Tap to select product image<br><small>or drag & drop</small></div>
+                `;
+                imagePreview.style.display = 'none';
+                uploadButton.disabled = true;
+                uploadButton.innerHTML = '<i class="fas fa-upload"></i> Upload Image';
+                currentImageFile = null;
+            }, 2000);
+        } else {
+            throw new Error('Upload failed');
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        showNotification('❌ Upload failed. Using local image preview instead.');
+        
+        // Fallback: Use local data URL for demo purposes
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imageUrlInput.value = e.target.result;
+            uploadButton.innerHTML = '<i class="fas fa-check"></i> Local Image';
+        };
+        reader.readAsDataURL(currentImageFile);
     });
 }
 
@@ -115,7 +237,7 @@ function displayProducts() {
         
         // Use placeholder if no image
         const imageContent = product.image ? 
-            `<img src="${product.image}" alt="${product.name}" class="product-image">` :
+            `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjhmOWZhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0jNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+UHJvZHVjdCBJbWFnZTwvdGV4dD48L3N2Zz4='">` :
             `<div class="product-image">
                 <div style="text-align: center; padding: 2rem;">
                     <i class="fas fa-camera" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
@@ -139,7 +261,7 @@ function displayProducts() {
     });
 }
 
-// Cart functionality
+// Cart functionality (keep all your existing cart functions)
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const cartItem = cart.find(item => item.id === productId);
@@ -156,7 +278,6 @@ function addToCart(productId) {
     updateCart();
     showNotification(`✅ ${product.name} added to cart! 🛍️`);
     
-    // Cart icon animation
     const cartIcon = document.querySelector('.cart-icon');
     cartIcon.classList.add('success-animation');
     setTimeout(() => cartIcon.classList.remove('success-animation'), 500);
@@ -169,14 +290,10 @@ function removeFromCart(productId) {
 }
 
 function updateCart() {
-    // Save to localStorage
     localStorage.setItem('trendzbyummi_cart', JSON.stringify(cart));
-    
-    // Update cart count
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
     
-    // Update cart items display
     cartItems.innerHTML = '';
     
     if (cart.length === 0) {
@@ -186,7 +303,6 @@ function updateCart() {
     }
     
     let total = 0;
-    
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
@@ -213,7 +329,7 @@ function toggleCart() {
     cartSidebar.classList.toggle('active');
 }
 
-// Checkout functionality
+// Checkout functionality (keep all your existing checkout functions)
 function openCheckoutModal() {
     if (cart.length === 0) {
         showNotification('🛒 Your cart is empty!');
@@ -236,7 +352,6 @@ function processOrder(e) {
     const address = checkoutForm.querySelector('textarea').value;
     const paymentMethod = formData.get('payment');
     
-    // Prepare order details for WhatsApp
     const orderDetails = {
         items: cart,
         total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
@@ -245,15 +360,12 @@ function processOrder(e) {
         timestamp: new Date().toLocaleString()
     };
     
-    // Send WhatsApp message
     sendWhatsAppOrder(orderDetails);
     
-    // Save order to localStorage
     const orders = JSON.parse(localStorage.getItem('trendzbyummi_orders')) || [];
     orders.push(orderDetails);
     localStorage.setItem('trendzbyummi_orders', JSON.stringify(orders));
     
-    // Clear cart and close modals
     cart = [];
     updateCart();
     closeCheckoutModal();
@@ -282,8 +394,6 @@ function sendWhatsAppOrder(orderDetails) {
                    `Thank you! 🎉`;
     
     const whatsappUrl = `https://wa.me/233591562900?text=${message}`;
-    
-    // Open WhatsApp in a new tab
     window.open(whatsappUrl, '_blank');
 }
 
@@ -296,7 +406,7 @@ function addNewProduct(e) {
         name: document.getElementById('productName').value,
         price: parseFloat(document.getElementById('productPrice').value),
         description: document.getElementById('productDesc').value,
-        image: document.getElementById('productImage').value
+        image: imageUrlInput.value
     };
     
     products.push(newProduct);
@@ -316,7 +426,6 @@ function updateAdminStats() {
 
 // Utility functions
 function showNotification(message) {
-    // Create notification element
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
@@ -332,7 +441,6 @@ function showNotification(message) {
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     `;
     notification.textContent = message;
-    
     document.body.appendChild(notification);
     
     setTimeout(() => {
