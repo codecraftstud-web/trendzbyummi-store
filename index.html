@@ -177,27 +177,40 @@
         </div>
     </div>
 
-    <!-- Simple Admin Panel -->
+    <!-- Password Protected Admin Panel -->
     <div class="admin-panel">
         <button class="admin-toggle" id="adminToggle">
-            <i class="fas fa-plus"></i>
+            <i class="fas fa-lock"></i>
         </button>
         <div class="admin-content" id="adminContent">
-            <h3>Add New Product</h3>
-            <form id="addProductForm">
-                <input type="text" id="productName" placeholder="Product Name" required>
-                <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
-                <textarea id="productDesc" placeholder="Product Description" required></textarea>
-                <div class="image-upload">
-                    <div class="upload-area" id="uploadArea">
-                        <i class="fas fa-camera"></i>
-                        <p>Tap to add product photo</p>
+            <div class="admin-header">
+                <h3>Admin Access</h3>
+                <button class="logout-btn" onclick="logoutAdmin()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+            <div id="loginSection">
+                <p>Enter admin password to continue</p>
+                <input type="password" id="adminPassword" placeholder="Enter password">
+                <button onclick="loginAdmin()">Access Admin Panel</button>
+            </div>
+            <div id="adminSection" style="display: none;">
+                <h4>Add New Product</h4>
+                <form id="addProductForm">
+                    <input type="text" id="productName" placeholder="Product Name" required>
+                    <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
+                    <textarea id="productDesc" placeholder="Product Description" required></textarea>
+                    <div class="image-upload">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-camera"></i>
+                            <p>Tap to add product photo</p>
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <img id="imagePreview" style="display: none; max-width: 100%; margin-top: 10px; border-radius: 10px;">
                     </div>
-                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                    <img id="imagePreview" style="display: none; max-width: 100%; margin-top: 10px; border-radius: 10px;">
-                </div>
-                <button type="submit">Add Product</button>
-            </form>
+                    <button type="submit">Add Product</button>
+                </form>
+            </div>
         </div>
     </div>
 
