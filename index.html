@@ -77,6 +77,28 @@
         </div>
     </section>
 
+    <!-- Social Media Section -->
+    <section class="social-media">
+        <div class="container">
+            <h2>Follow Us</h2>
+            <p>Stay updated with our latest collections and trends</p>
+            <div class="social-links">
+                <a href="https://tiktok.com/@trendzbyummi_store" class="social-link" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                    <span>@trendzbyummi_store</span>
+                </a>
+                <a href="https://instagram.com/trendzbyummi_store" class="social-link" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                    <span>@trendzbyummi_store</span>
+                </a>
+                <a href="https://facebook.com/trendzbyummi_store" class="social-link" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                    <span>@trendzbyummi_store</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
@@ -171,8 +193,21 @@
                 <input type="text" id="productName" placeholder="Product Name" required>
                 <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
                 <textarea id="productDesc" placeholder="Product Description" required></textarea>
-                <input type="text" id="productImage" placeholder="Image URL" required>
-                <small>Upload images to imgur.com or similar service</small>
+                
+                <div class="image-upload-container">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div class="upload-text">Tap to select product image<br><small>or drag & drop</small></div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <img id="imagePreview" alt="Image Preview">
+                    <button type="button" class="upload-btn" id="uploadButton" disabled>
+                        <i class="fas fa-upload"></i> Upload Image
+                    </button>
+                </div>
+                
+                <input type="text" id="productImage" placeholder="Image URL will appear here" readonly>
+                <small>Image will be uploaded automatically</small>
                 <button type="submit">Add Product</button>
             </form>
             <div class="admin-stats">
