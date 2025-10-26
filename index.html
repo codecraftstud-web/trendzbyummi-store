@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrendzByUmmi - Premium Unisex Fashion</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -28,11 +28,20 @@
         </nav>
     </header>
 
+    <!-- Special Offers Banner -->
+    <div class="special-offers">
+        <div class="offers-scroll">
+            <span>🚀 FREE shipping on orders over GHS 300</span> • 
+            <span>🎁 Buy 2 get 1 free on selected items</span> • 
+            <span>💝 First-time customer? Get 15% off!</span>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h2>Elevate Your Style</h2>
-            <p>Discover premium unisex fashion that makes a statement</p>
+            <p>Discover premium unisex fashion that makes a statement. Quality meets style in every piece.</p>
             <a href="#products" class="cta-button">Shop Now</a>
         </div>
     </section>
@@ -42,7 +51,28 @@
         <div class="container">
             <h2>Our Collection</h2>
             <div class="product-grid" id="productGrid">
-                <!-- Products will be loaded dynamically -->
+                <!-- Products loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Love the quality! Fast delivery too!"</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Best fashion find in Accra!"</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"The hoodies are amazing quality!"</p>
+                </div>
             </div>
         </div>
     </section>
@@ -51,7 +81,7 @@
     <section id="about" class="about">
         <div class="container">
             <h2>About TrendzByUmmi</h2>
-            <p>Your go-to destination for premium unisex fashion in Ghana. We blend style with comfort to bring you the latest trends that suit every personality.</p>
+            <p>Your premier destination for premium unisex fashion in Ghana. We blend contemporary style with exceptional comfort to bring you trend-setting pieces that celebrate individuality and confidence.</p>
         </div>
     </section>
 
@@ -60,14 +90,14 @@
         <div class="container">
             <h2>Get In Touch</h2>
             <div class="contact-info">
-                <div class="contact-item">
+                <a href="https://wa.me/233591562900?text=Hi%20TrendzByUmmi!%20I%20saw%20your%20website%20and%20I'm%20interested%20in%20your%20products%20🛍️" class="contact-item" target="_blank">
                     <i class="fab fa-whatsapp"></i>
-                    <span>0591 562 900</span>
-                </div>
-                <div class="contact-item">
+                    <span>Chat on WhatsApp</span>
+                </a>
+                <a href="mailto:trendzbyummi@gmail.com" class="contact-item">
                     <i class="fas fa-envelope"></i>
                     <span>trendzbyummi@gmail.com</span>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -120,27 +150,42 @@
                         Bank Transfer
                     </label>
                 </div>
-                <button type="submit">Place Order</button>
+                <button type="submit">Place Order via WhatsApp</button>
             </form>
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- Secure Admin Panel -->
     <div class="admin-panel">
         <button class="admin-toggle" id="adminToggle">
-            <i class="fas fa-cog"></i>
+            <i class="fas fa-lock"></i>
         </button>
         <div class="admin-content" id="adminContent">
-            <h3>Admin Panel</h3>
+            <div class="admin-header">
+                <h3>Admin Panel</h3>
+                <button class="logout-btn" onclick="logoutAdmin()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
             <form id="addProductForm">
                 <input type="text" id="productName" placeholder="Product Name" required>
                 <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
                 <textarea id="productDesc" placeholder="Product Description" required></textarea>
                 <input type="text" id="productImage" placeholder="Image URL" required>
+                <small>Upload images to imgur.com or similar service</small>
                 <button type="submit">Add Product</button>
             </form>
+            <div class="admin-stats">
+                <p>Products: <span id="productCount">0</span></p>
+                <p>Orders: <span id="orderCount">0</span></p>
+            </div>
         </div>
     </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/233591562900?text=Hi%20TrendzByUmmi!%20I%20saw%20your%20website%20and%20I'm%20interested%20in%20your%20products%20🛍️" class="floating-whatsapp" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script src="script.js"></script>
 </body>
