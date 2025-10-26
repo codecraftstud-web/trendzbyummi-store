@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrendzByUmmi - Premium Unisex Fashion</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1>TrendzByUmmi</h1>
+                <span class="tagline">Premium Unisex Fashion</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Elevate Your Style</h2>
+            <p>Discover premium unisex fashion that makes a statement</p>
+            <a href="#products" class="cta-button">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2>Our Collection</h2>
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About TrendzByUmmi</h2>
+            <p>Your go-to destination for premium unisex fashion in Ghana. We blend style with comfort to bring you the latest trends that suit every personality.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>0591 562 900</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>trendzbyummi@gmail.com</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be added here -->
+        </div>
+        <div class="cart-total">
+            <strong>Total: GHS <span id="cartTotal">0.00</span></strong>
+        </div>
+        <div class="payment-methods">
+            <h4>We Accept:</h4>
+            <div class="payment-icons">
+                <div class="payment-method">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>MTN Mobile Money</span>
+                </div>
+                <div class="payment-method">
+                    <i class="fas fa-university"></i>
+                    <span>Bank Transfer</span>
+                </div>
+            </div>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Complete Your Order</h3>
+            <form id="checkoutForm">
+                <input type="text" placeholder="Full Name" required>
+                <input type="tel" placeholder="Phone Number" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Delivery Address" required></textarea>
+                <div class="payment-selection">
+                    <label>
+                        <input type="radio" name="payment" value="momo" checked>
+                        MTN Mobile Money
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="bank">
+                        Bank Transfer
+                    </label>
+                </div>
+                <button type="submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel">
+        <button class="admin-toggle" id="adminToggle">
+            <i class="fas fa-cog"></i>
+        </button>
+        <div class="admin-content" id="adminContent">
+            <h3>Admin Panel</h3>
+            <form id="addProductForm">
+                <input type="text" id="productName" placeholder="Product Name" required>
+                <input type="number" id="productPrice" placeholder="Price (GHS)" step="0.01" required>
+                <textarea id="productDesc" placeholder="Product Description" required></textarea>
+                <input type="text" id="productImage" placeholder="Image URL" required>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
