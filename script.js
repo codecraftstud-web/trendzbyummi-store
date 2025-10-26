@@ -24,11 +24,13 @@ let products = JSON.parse(localStorage.getItem('trendzbyummi_products')) || [
 ];
 
 let cart = JSON.parse(localStorage.getItem('trendzbyummi_cart')) || [];
+let currentImage = null;
 
 // Initialize store
 function initStore() {
     displayProducts();
     updateCart();
+    setupImageUpload();
     
     // Event listeners
     document.querySelector('.cart-icon').addEventListener('click', toggleCart);
@@ -47,6 +49,30 @@ function initStore() {
     });
 }
 
+// Setup image upload
+function setupImageUpload() {
+    const uploadArea = document.getElementById('uploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    uploadArea.addEventListener('click', function() {
+        imageInput.click();
+    });
+    
+    imageInput.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                currentImage = e.target.result;
+                uploadArea.innerHTML = '<i class="fas fa-check" style="color: #4CAF50;"></i><p>Photo added! Tap to change</p>';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+}
+
 // Display products
 function displayProducts() {
     const productGrid = document.getElementById('productGrid');
@@ -58,11 +84,9 @@ function displayProducts() {
         
         const imageContent = product.image ? 
             `<img src="${product.image}" alt="${product.name}" class="product-image">` :
-            `<div class="product-image" style="display: flex; align-items: center; justify-content: center; color: #666;">
-                <div style="text-align: center;">
-                    <i class="fas fa-shirt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <div>Product Image</div>
-                </div>
+            `<div class="product-image" style="display: flex; align-items: center; justify-content: center; color: #666; flex-direction: column;">
+                <i class="fas fa-shirt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <div>No Image</div>
             </div>`;
         
         productCard.innerHTML = `
@@ -95,12 +119,13 @@ function addToCart(productId) {
     }
     
     updateCart();
-    showNotification(`${product.name} added to cart!`);
+    showNotification(`${product.name} added to cart! 🛍️`);
 }
 
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
     updateCart();
+    showNotification("Item removed from cart");
 }
 
 function updateCart() {
@@ -113,7 +138,7 @@ function updateCart() {
     cartItems.innerHTML = '';
     
     if (cart.length === 0) {
-        cartItems.innerHTML = '<p style="text-align: center; color: #666;">Your cart is empty</p>';
+        cartItems.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">Your cart is empty</p>';
         document.getElementById('cartTotal').textContent = '0.00';
         return;
     }
@@ -187,7 +212,7 @@ function processOrder(e) {
     closeCheckoutModal();
     toggleCart();
     
-    showNotification('Order placed successfully! We will contact you shortly.');
+    showNotification('✅ Order sent to WhatsApp! We will contact you shortly.');
     document.getElementById('checkoutForm').reset();
 }
 
@@ -196,7 +221,7 @@ function sendWhatsAppOrder(orderDetails) {
         `${item.name} (GHS ${item.price.toFixed(2)} x ${item.quantity})`
     ).join('%0A');
     
-    const message = `New Order from TrendzByUmmi!%0A%0A` +
+    const message = `🛍️ NEW ORDER - TrendzByUmmi%0A%0A` +
                    `Customer: ${orderDetails.customer.name}%0A` +
                    `Phone: ${orderDetails.customer.phone}%0A` +
                    `Email: ${orderDetails.customer.email}%0A` +
@@ -223,7 +248,7 @@ function addNewProduct(e) {
         name: document.getElementById('productName').value,
         price: parseFloat(document.getElementById('productPrice').value),
         description: document.getElementById('productDesc').value,
-        image: document.getElementById('productImage').value
+        image: currentImage || ""
     };
     
     products.push(newProduct);
@@ -231,7 +256,12 @@ function addNewProduct(e) {
     
     displayProducts();
     document.getElementById('addProductForm').reset();
-    showNotification('Product added successfully!');
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('uploadArea').innerHTML = '<i class="fas fa-camera"></i><p>Tap to add product photo</p>';
+    currentImage = null;
+    
+    showNotification('✅ Product added successfully!');
+    document.getElementById('adminContent').classList.remove('active');
 }
 
 // Utility functions
@@ -244,8 +274,10 @@ function showNotification(message) {
         background: var(--accent);
         color: white;
         padding: 1rem 2rem;
-        border-radius: 5px;
+        border-radius: 10px;
         z-index: 1003;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     `;
     notification.textContent = message;
     document.body.appendChild(notification);
